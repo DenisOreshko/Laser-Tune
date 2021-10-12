@@ -326,16 +326,15 @@ bool ComPort::setPassword(const char password[]){
 			r++;
 		}
 		if (!passwordConfirmed){
-			WriteDataWithoutEnter(esc);
-			ReadData();
 			r = 0;
+			WriteDataWithoutEnter(esc);
+			ReadData();			
 			WriteData("password");
 			ReadData();
 			WriteData(password);
 			ReadData();
-			r += 5;
 			while (readBuffer[r] != '\0') {
-				if (readBuffer[r] == 'P' &&
+				if (readBuffer[r + 0] == 'P' &&
 					readBuffer[r + 1] == 'A' &&
 					readBuffer[r + 2] == 'S' &&
 					readBuffer[r + 3] == 'S' &&
@@ -354,9 +353,6 @@ bool ComPort::setPassword(const char password[]){
 					readBuffer[r + 16] == 'D' &&
 					readBuffer[r + 17] == '!') {
 					passwordConfirmed = true;
-				}
-				else {
-					break;
 				}
 				r++;
 			}
